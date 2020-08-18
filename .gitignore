@@ -31,3 +31,4 @@ build/
 /.mvn/
 /.mvn/wrapper/maven-wrapper.properties
 /.mvn/wrapper/MavenWrapperDownloader.java
+/bin/
