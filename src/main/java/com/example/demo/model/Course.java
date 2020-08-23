@@ -12,6 +12,7 @@ import javax.persistence.Table;
 public class Course {
 	int id;
 	String name;
+	int num;
 	@Id
 	@GeneratedValue(strategy=GenerationType.AUTO)
 	public int getId() {
@@ -27,4 +28,12 @@ public class Course {
 	public void setName(String name) {
 		this.name = name;
 	}
+	@Column(name="num")
+	public int getNum() {
+		return num;
+	}
+	public void setNum(int num) {
+		this.num = num;
+	}
+	
 }

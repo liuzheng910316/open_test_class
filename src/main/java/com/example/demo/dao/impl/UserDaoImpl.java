@@ -3,6 +3,7 @@ package com.example.demo.dao.impl;
 import java.util.List;
 
 import org.hibernate.Criteria;
+import org.hibernate.SQLQuery;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.hibernate.criterion.Restrictions;
@@ -20,21 +21,33 @@ public class UserDaoImpl implements UserDao{
 	
 	public void addUser(User user){
 		Session session = sessionFactory.openSession();
-		session.save(user);
+		String sql = "insert into user(name,password,type) values (?,?,?) ";
+		SQLQuery query = session.createSQLQuery(sql);
+		query.setParameter(0, user.getName());
+		query.setParameter(1, user.getPassword());
+		query.setParameter(2, user.getType());
+		query.executeUpdate();
 		session.close();
 	}
 
 	@Override
 	public void updateUser(User user) {
-		// TODO Auto-generated method stub
 		Session session = sessionFactory.openSession();
-		session.update(user);
+		String sql = "update user set name = ? where id = ? ";
+		SQLQuery query = session.createSQLQuery(sql);
+		query.setParameter(0, user.getName());
+		query.setParameter(1, user.getId());
+		query.executeUpdate();
 		session.close();
 	}
 	
 	public void deleteUser(int userId){
+		// TODO Auto-generated method stub
 		Session session = sessionFactory.openSession();
-		session.delete(userId);
+		String sql = "delete from user where id = ? ";
+		SQLQuery query = session.createSQLQuery(sql);
+		query.setParameter(0, userId);
+		query.executeUpdate();
 		session.close();
 	}
 	
@@ -49,10 +62,10 @@ public class UserDaoImpl implements UserDao{
 		return list;
 	}
 	
-	public User login(String email,String password){
+	public User login(String name,String password){
 		Session session = sessionFactory.openSession();
 		Criteria criteria = session.createCriteria(User.class);
-		criteria.add(Restrictions.eq("email", email));
+		criteria.add(Restrictions.eq("name", name));
 		criteria.add(Restrictions.eq("password", password));
 		List<User> list = criteria.list();
 		session.close();

@@ -1,5 +1,6 @@
 package com.example.demo.dao.impl;
 
+import org.hibernate.SQLQuery;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -16,15 +17,23 @@ public class SuscribeDaoImpl implements SuscribeDao {
 	public void addSuscribe(Suscribe suscribe) {
 		// TODO Auto-generated method stub
 		Session session = sessionFactory.openSession();
-		session.save(suscribe);
+		String sql = "insert into suscribe(userId,courseId) values (?,?) ";
+		SQLQuery query = session.createSQLQuery(sql);
+		query.setParameter(0, suscribe.getUserId());
+		query.setParameter(1, suscribe.getCourseId());
+		query.executeUpdate();
 		session.close();
 	}
 
 	@Override
-	public void deleteSuscribe(int suscribeId) {
+	public void deleteSuscribe(Suscribe suscribe) {
 		// TODO Auto-generated method stub
 		Session session = sessionFactory.openSession();
-		session.delete(suscribeId);
+		String sql = "delete from suscribe where userId = ? and courseId = ?";
+		SQLQuery query = session.createSQLQuery(sql);
+		query.setParameter(0, suscribe.getUserId());
+		query.setParameter(1, suscribe.getCourseId());
+		query.executeUpdate();
 		session.close();
 	}
 
